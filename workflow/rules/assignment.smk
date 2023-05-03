@@ -125,8 +125,9 @@ rule assignment_bwa_ref:
         ref="results/assignment/{assignment}/reference/reference.fa",
         bwa=expand(
             "results/assignment/{{assignment}}/reference/reference.fa.{ext}",
-            ext=["fai"] + assignment_bwa_dicts,
+            ext= assignment_bwa_dicts,
         ),
+        refidx="results/assignment/{assignment}/reference/reference.fa.fai",
         d="results/assignment/{assignment}/reference/reference.fa.dict",
     conda:
         "../envs/bwa_samtools_picard_htslib.yaml"
@@ -137,9 +138,8 @@ rule assignment_bwa_ref:
         cat {input} | awk '{{gsub(/[\\]\\[]/,"_")}}$0' > {output.ref};
         bwa index -a bwtsw {output.ref} &> {log};
         samtools faidx {output.ref} &>> {log};
-        picard CreateSequenceDictionary REFERENCE={output.ref} OUTPUT={output.d} &>> {log}
+        picard CreateSequenceDictionary -REFERENCE {output.ref} -OUTPUT {output.d} &>> {log}
         """
-
 
 rule assignment_mapping:
     """
