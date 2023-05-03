@@ -40,7 +40,11 @@ Example file:
     GGCGCGCTTTTTCGAAGAAACCCGCCGGAGAATATAAGGGA
     >CRS4
     TTAGACCGCCCTTTACCCCGAGAAAACTCAGCTACACACTC
-    
+
+.. note:: The assignment workflow runs Picard back-end (i.e., a set of command line tools for manipulating high-throughput sequencing (HTS) data and formats such as SAM/BAM/CRAM and VCF), so avoid using special characters in the headers of the design file. For example, the following headers will cause an error:. The followings are allowed: '[0-9A-Za-z!#$%&*+./:;=?@^_|~-]*'
+
+
+
 Assignment File or configuration
 --------------------------------
 Tab separated gzipped file with barcode mapped to sequence. Can be generated using the :ref:`Assignment` workflow. Config file must be configured similar to this:
