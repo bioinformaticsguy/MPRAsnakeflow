@@ -1,32 +1,26 @@
 ---
-global:
-  threads: 10
+global:  # general configs effecting one or multiple parts
+  threads: 30
   assignments:
-    split_number: 30
+    split_number: 1  # number of files fastq should be split for parallelization
 assignments:
-  assocBasic:
+  assignIGVFDesign:  # name of an example assignment (can be any string)
     bc_length: 15
-    sequence_length:
-      min: 166
-      max: 175
-    alignment_start:
-      min: 1
-      max: 3
-    R1:
-      - data/SRR10800986_1.fastq.gz
-    R2:
-      - data/SRR10800986_2.fastq.gz
-    R3:
-      - data/SRR10800986_3.fastq.gz
-    reference: data/design.fa
+    sequence_length:  # sequence length of design excluding adapters.
+      min: 265
+      max: 275
+    alignment_start:  # start of an alignment in the reference. Here using 15 bp adapters. Can be different when using adapter free approaches
+      min: 15  # integer
+      max: 17  # integer
+    min_mapping_quality: 1  # integer >=0 Please use 1 when you have oligos that differ by 1 base in your reference/design file
+    FW:
+      - # Forward seq.fastq.gz
+    BC:
+      - # Barcode seq.fastq.gz
+    REV:
+      - # Reverse seq.fastq.gz
+    reference: # Design.fasta
     configs:
-      exampleConfig:
+      exampleAssignmentConfig:  # name of an example filtering config
         min_support: 3
         fraction: 0.7
-        unknown_other: true
-        ambiguous: true
-      exampleConfigTrueMatches:
-        min_support: 3
-        fraction: 0.7
-        unknown_other: false
-        ambiguous: false
