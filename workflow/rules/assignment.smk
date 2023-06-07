@@ -85,9 +85,8 @@ rule assignment_merge:
         REV="results/assignment/{assignment}/fastq/splits/REV.split{split}.BCattached.fastq.gz",
     output:
         un=temp("results/assignment/{assignment}/fastq/merge_split{split}.un.fastq.gz"),
-        join=temp(
-            "results/assignment/{assignment}/fastq/merge_split{split}.join.fastq.gz"
-        ),
+        join=
+            "results/assignment/{assignment}/fastq/merge_split{split}.join.fastq.gz",
     params:
         min_overlap=lambda wc: config["assignments"][wc.assignment]["NGmerge"][
             "min_overlap"
@@ -118,6 +117,7 @@ rule assignment_merge:
 rule assignment_bwa_ref:
     """
     Create mapping reference for BWA from design file.
+    ## replace bwa with bowtie2 for comparison b/n two algorithms on better performance.
     """
     input:
         lambda wc: config["assignments"][wc.assignment]["reference"],
@@ -136,7 +136,7 @@ rule assignment_bwa_ref:
     shell:
         """
         cat {input} | awk '{{gsub(/[\\]\\[]/,"_")}}$0' > {output.ref};
-        bwa index -a bwtsw {output.ref} &> {log};
+        bowtie2-build {output.ref} {output.ref} &> {log};
         samtools faidx {output.ref} &>> {log};
         picard CreateSequenceDictionary -REFERENCE {output.ref} -OUTPUT {output.d} &>> {log}
         """
@@ -161,7 +161,7 @@ rule assignment_mapping:
         temp("results/logs/assignment/mapping.{assignment}.{split}.log"),
     shell:
         """
-        bwa mem -t {threads} -L 80 -M -C {input.reference} <(
+        bowtie2 -p {threads} -L 80 --local --sensitive-local -mm -C -x {input.reference} -U <(
             gzip -dc {input.reads}
         )  | samtools sort -l 0 -@ {threads} > {output} 2> {log}
         """

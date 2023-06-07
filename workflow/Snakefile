@@ -46,6 +46,9 @@ rule all:
     input:
         ## assignments
         getAssignmentConfig_helper(
+            "results/assignment/{assignment}/fastq/merge_split1.join.fastq.gz",
+        ),
+        getAssignmentConfig_helper(
             "results/assignment/{assignment}/assignment_barcodes.{config}.sorted.tsv.gz",
         ),
         getAssignmentConfig_helper(
