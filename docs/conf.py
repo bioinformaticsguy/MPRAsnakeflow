@@ -15,6 +15,7 @@
 import os
 import sys
 sys.path.insert(0, os.path.abspath('.'))
+from sphinxawesome_theme.postprocess import Icons
 
 
 # -- Project information -----------------------------------------------------
@@ -44,7 +45,8 @@ extensions = [
     'sphinx.ext.imgmath',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
-    'sphinx_rtd_theme',
+    # 'sphinx_rtd_theme',
+    # "sphinxawesome_theme.highlighting",
     'recommonmark'
 ]
 
@@ -76,12 +78,54 @@ exclude_patterns = [u'_build', 'Thumbs.db', '.DS_Store']
 pygments_style = None
 
 
+### Dark theme
+# -- Options for HTML output ----------------------------------------------
+
+# The theme to use for HTML and HTML Help pages.  See the documentation for
+# a list of builtin themes.
+html_theme = "sphinxawesome_theme"
+
+
+html_theme_options = {
+    # "logo_light": "logo-snake.svg",
+    # "logo_dark": "logo-snake.svg",
+
+    "awesome_external_links": True,
+    "awesome_headerlinks": True,
+    "show_prev_next": False,
+}
+html_permalinks_icon = Icons.permalinks_icon
+
+
+
+# html_theme_options = {
+#     "logo_light": "logo-snake.svg",
+#     "logo_dark": "logo-snake.svg",
+#     "main_nav_links": {
+#         "Homepage": "https://snakemake.github.io",
+#         "Plugin catalog": "https://snakemake.github.io/snakemake-plugin-catalog",
+#         "Workflow catalog": "https://snakemake.github.io/snakemake-workflow-catalog",
+#         "Wrappers": "https://snakemake-wrappers.readthedocs.io",
+#     },
+#     "awesome_external_links": True,
+#     "awesome_headerlinks": True,
+#     "show_prev_next": False,
+# }
+# html_permalinks_icon = Icons.permalinks_icon
+
+
+
+
+
+##### Dark Theme End
+
+
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #
-html_theme = 'sphinx_rtd_theme'
+# html_theme = 'sphinx_rtd_theme'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -186,3 +230,7 @@ epub_exclude_files = ['search.html']
 
 # If true, `todo` and `todoList` produce output, else they produce nothing.
 todo_include_todos = True
+
+
+def setup(app):
+    app.add_css_file('custom.css')
