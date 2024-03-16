@@ -85,18 +85,29 @@ rule statistic_correlation_bc_counts_hist:
         script=getScript("count/plot_perBCCounts_stats.R"),
     output:
         # "results/experiments/{project}/statistic/barcode/{raw_or_assigned}/{condition}_{config}_DNA_perBarcode.png",
-        "results/experiments/{project}/statistic/barcode/{raw_or_assigned}/{condition}_{config}_RNA_perBarcode.png",
-
+        # "results/experiments/{project}/statistic/barcode/{raw_or_assigned}/{condition}_{config}_RNA_perBarcode.png",
         report(
             "results/experiments/{project}/statistic/barcode/{raw_or_assigned}/{condition}_{config}_DNA_perBarcode.png",
             category="{project}",
-            subcategory="Per Bar-Code Plot",
+            subcategory="Per Barcode Plot",
             labels={
                 "Step": "{raw_or_assigned}",
                 "Condition": "{condition}",
                 "Configuration": "{config}",
-                "Plot": "Ratio",
+                "Plot": "DNA",
+            }),
+            
+        report(
+            "results/experiments/{project}/statistic/barcode/{raw_or_assigned}/{condition}_{config}_RNA_perBarcode.png",
+            category="{project}",
+            subcategory="Per Barcode Plot",
+            labels={
+                "Step": "{raw_or_assigned}",
+                "Condition": "{condition}",
+                "Configuration": "{config}",
+                "Plot": "RNA",
             })
+
 
     params:
         replicates=lambda wc: ",".join(
