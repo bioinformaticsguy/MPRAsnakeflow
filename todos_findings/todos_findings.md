@@ -33,3 +33,7 @@ When downloaded the SRA file for the combined workflow the download result  was 
 (snakemake) ali@ali-MS-7C02:~/Documents/MPRAsnakeflow/resources/combined_basic/data$ 
 
 ```
+
+# 20th March 2024 @ 15:44:46
+Embedding problem is still, with the latest version of the snakemake file. 
+![img.png](img.png)
