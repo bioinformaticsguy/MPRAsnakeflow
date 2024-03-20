@@ -37,3 +37,6 @@ When downloaded the SRA file for the combined workflow the download result  was 
 # 20th March 2024 @ 15:44:46
 Embedding problem is still, with the latest version of the snakemake file. 
 ![img.png](img.png)
+
+I also tried the small report but got the following error:
+![alt text](image.png)
