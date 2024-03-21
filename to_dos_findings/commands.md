@@ -9,3 +9,6 @@ Happy coding!
 # Renaming files removing .200K
 
 for file in *.200K*.fastq.gz; do mv -- "$file" "${file//.200K/}"; done
+
+# Snakemake Command
+snakemake -c 10 --snakefile ../../workflow/Snakefile --configfile config.yml --notemp -p 
