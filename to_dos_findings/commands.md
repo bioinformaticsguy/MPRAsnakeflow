@@ -11,4 +11,7 @@ Happy coding!
 for file in *.200K*.fastq.gz; do mv -- "$file" "${file//.200K/}"; done
 
 # Snakemake Command
-snakemake -c 10 --snakefile ../../workflow/Snakefile --configfile config.yml --notemp -p 
+snakemake -c 11 --use-conda --snakefile ../../workflow/Snakefile --configfile config.yml --notemp -p -n
+
+# To Start a Python Server to see HTML files.
+python3 -m http.server 8000
