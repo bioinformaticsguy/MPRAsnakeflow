@@ -11,5 +11,4 @@ dependencies:
   - recommonmark
   - urllib3
   - pip:
-      - sphinx-rtd-theme
       - sphinxawesome-theme

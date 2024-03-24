@@ -46,7 +46,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
     # 'sphinx_rtd_theme',
-    # "sphinxawesome_theme.highlighting",
+    "sphinxawesome_theme.highlighting",
     'recommonmark'
 ]
 
