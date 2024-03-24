@@ -269,7 +269,8 @@ write_correlation_plots <- function(plots, name) {
     ggplot2::ggsave(name,
                     correlation_plots,
                     width = 15,
-                    height = 10 * length(plots))
+                    height = 10 * length(plots),
+                    device = "pdf")
 }
 
 write_correlation <- function(correlations, name) {
@@ -403,22 +404,22 @@ if (data %>% nrow() > 1 && nrow(all) > 1) {
     }
 
     write_correlation_plots(plots_correlations_dna,
-                            sprintf("%s_DNA_pairwise.png", outdir))
+                            sprintf("%s_DNA_pairwise.pdf", outdir))
     write_correlation_plots(plots_correlations_rna,
-                            sprintf("%s_RNA_pairwise.png", outdir))
+                            sprintf("%s_RNA_pairwise.pdf", outdir))
     write_correlation_plots(plots_correlations_ratio,
-                            sprintf("%s_Ratio_pairwise.png", outdir))
+                            sprintf("%s_Ratio_pairwise.pdf", outdir))
     write_correlation_plots(
         plots_cor_min_thresh_dna,
-        sprintf("%s_DNA_pairwise_minThreshold.png", outdir)
+        sprintf("%s_DNA_pairwise_minThreshold.pdf", outdir)
     )
     write_correlation_plots(
         plots_cor_min_thresh_rna,
-        sprintf("%s_RNA_pairwise_minThreshold.png", outdir)
+        sprintf("%s_RNA_pairwise_minThreshold.pdf", outdir)
     )
     write_correlation_plots(
         plots_cor_min_thresh_ratio,
-        sprintf("%s_Ratio_pairwise_minThreshold.png", outdir)
+        sprintf("%s_Ratio_pairwise_minThreshold.pdf", outdir)
     )
 
     write_correlation(stats_correlations,

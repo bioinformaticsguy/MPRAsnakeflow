@@ -202,7 +202,7 @@ rule statistic_correlation_calculate:
         script=getScript("count/plot_perInsertCounts_correlation.R"),
     output:
         report(
-            "results/experiments/{project}/statistic/assigned_counts/{assignment}/{config}/{condition}_DNA_pairwise.png",
+            "results/experiments/{project}/statistic/assigned_counts/{assignment}/{config}/{condition}_DNA_pairwise.pdf",
             category="{project}",
             subcategory="Oligo correlation plots",
             labels={
@@ -214,7 +214,7 @@ rule statistic_correlation_calculate:
             },
         ),
         report(
-            "results/experiments/{project}/statistic/assigned_counts/{assignment}/{config}/{condition}_RNA_pairwise.png",
+            "results/experiments/{project}/statistic/assigned_counts/{assignment}/{config}/{condition}_RNA_pairwise.pdf",
             category="{project}",
             subcategory="Oligo correlation plots",
             labels={
@@ -226,7 +226,7 @@ rule statistic_correlation_calculate:
             },
         ),
         report(
-            "results/experiments/{project}/statistic/assigned_counts/{assignment}/{config}/{condition}_Ratio_pairwise.png",
+            "results/experiments/{project}/statistic/assigned_counts/{assignment}/{config}/{condition}_Ratio_pairwise.pdf",
             category="{project}",
             subcategory="Oligo correlation plots",
             labels={
@@ -238,7 +238,7 @@ rule statistic_correlation_calculate:
             },
         ),
         report(
-            "results/experiments/{project}/statistic/assigned_counts/{assignment}/{config}/{condition}_DNA_pairwise_minThreshold.png",
+            "results/experiments/{project}/statistic/assigned_counts/{assignment}/{config}/{condition}_DNA_pairwise_minThreshold.pdf",
             category="{project}",
             subcategory="Oligo correlation plots",
             labels=lambda wc: {
@@ -254,7 +254,7 @@ rule statistic_correlation_calculate:
             },
         ),
         report(
-            "results/experiments/{project}/statistic/assigned_counts/{assignment}/{config}/{condition}_RNA_pairwise_minThreshold.png",
+            "results/experiments/{project}/statistic/assigned_counts/{assignment}/{config}/{condition}_RNA_pairwise_minThreshold.pdf",
             category="{project}",
             subcategory="Oligo correlation plots",
             labels=lambda wc: {
@@ -270,7 +270,7 @@ rule statistic_correlation_calculate:
             },
         ),
         report(
-            "results/experiments/{project}/statistic/assigned_counts/{assignment}/{config}/{condition}_Ratio_pairwise_minThreshold.png",
+            "results/experiments/{project}/statistic/assigned_counts/{assignment}/{config}/{condition}_Ratio_pairwise_minThreshold.pdf",
             category="{project}",
             subcategory="Oligo correlation plots",
             labels=lambda wc: {
