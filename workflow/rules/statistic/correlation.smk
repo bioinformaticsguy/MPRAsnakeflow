@@ -13,7 +13,7 @@ rule statistic_correlation_bc_counts:
         script=getScript("count/plot_perBCCounts_correlation.R"),
     output:
         report(
-            "results/experiments/{project}/statistic/barcode/{raw_or_assigned}/{condition}_{config}_barcode_DNA_pairwise.png",
+            "results/experiments/{project}/statistic/barcode/{raw_or_assigned}/{condition}_{config}_barcode_DNA_pairwise.pdf",
             category="{project}",
             subcategory="BC correlation plots",
             labels={
@@ -24,7 +24,7 @@ rule statistic_correlation_bc_counts:
             },
         ),
         report(
-            "results/experiments/{project}/statistic/barcode/{raw_or_assigned}/{condition}_{config}_barcode_RNA_pairwise.png",
+            "results/experiments/{project}/statistic/barcode/{raw_or_assigned}/{condition}_{config}_barcode_RNA_pairwise.pdf",
             category="{project}",
             subcategory="BC correlation plots",
             labels={
@@ -35,7 +35,7 @@ rule statistic_correlation_bc_counts:
             },
         ),
         report(
-            "results/experiments/{project}/statistic/barcode/{raw_or_assigned}/{condition}_{config}_barcode_Ratio_pairwise.png",
+            "results/experiments/{project}/statistic/barcode/{raw_or_assigned}/{condition}_{config}_barcode_Ratio_pairwise.pdf",
             category="{project}",
             subcategory="BC correlation plots",
             labels={

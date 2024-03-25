@@ -153,7 +153,7 @@ writeCorrelationPlots <- function(plots, name) {
   correlation_plots <- cowplot::plot_grid(plotlist = plots, ncol = 1)
   # correlation_plots <- do.call("grid.arrange", c(plots))
 
-  ggsave(name, correlation_plots, width = 15, height = 10 * length(plots), dpi=96, type="cairo")
+  ggsave(name, correlation_plots, width = 15, height = 10 * length(plots), dpi = 96, device = "pdf")
 }
 
 writeCorrelation <- function(correlations, name) {
@@ -221,8 +221,8 @@ if (data %>% nrow() > 1) {
   print("write correlation stats")
   writeCorrelation(stats_correlations, sprintf("%s_barcode_correlation.tsv", outdir))
   print("write correlation plots")
-  writeCorrelationPlots(plots_correlations_dna, sprintf("%s_barcode_DNA_pairwise.png", outdir))
-  writeCorrelationPlots(plots_correlations_rna, sprintf("%s_barcode_RNA_pairwise.png", outdir))
-  writeCorrelationPlots(plots_correlations_ratio, sprintf("%s_barcode_Ratio_pairwise.png", outdir))
+  writeCorrelationPlots(plots_correlations_dna, sprintf("%s_barcode_DNA_pairwise.pdf", outdir))
+  writeCorrelationPlots(plots_correlations_rna, sprintf("%s_barcode_RNA_pairwise.pdf", outdir))
+  writeCorrelationPlots(plots_correlations_ratio, sprintf("%s_barcode_Ratio_pairwise.pdf", outdir))
 
 }
