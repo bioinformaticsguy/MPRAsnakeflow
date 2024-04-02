@@ -9,3 +9,4 @@ dependencies:
   - r-cairo
   - r-optparse
   - r-tidyverse
+  - r-magick
