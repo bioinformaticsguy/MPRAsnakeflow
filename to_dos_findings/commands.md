@@ -9,6 +9,8 @@ Happy coding!
 # Renaming files removing .200K
 
 for file in *.200K*.fastq.gz; do mv -- "$file" "${file//.200K/}"; done
+## Using Perl
+rename 's/\.200K//' *.200K*
 
 # Snakemake Command
 snakemake -c 11 --use-conda --snakefile ../../workflow/Snakefile --configfile config.yml --notemp -p -n
