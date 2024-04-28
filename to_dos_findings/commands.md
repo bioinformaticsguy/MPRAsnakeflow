@@ -6,10 +6,12 @@ Please format each command as a separate code block using triple backticks (```)
 
 Happy coding!
 
-# Renaming files removing .200K
-
+# Downloading and Renaming files removing .200K
+wget -r -np -nH --cut-dirs=2 -R index.html https://kircherlab.bihealth.org/download/ali/
 for file in *.200K*.fastq.gz; do mv -- "$file" "${file//.200K/}"; done
-## Using Perl
+
+
+## Alternative approach to rename Using Perl
 rename 's/\.200K//' *.200K*
 
 # Snakemake Command
