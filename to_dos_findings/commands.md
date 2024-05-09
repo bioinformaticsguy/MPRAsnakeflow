@@ -19,3 +19,6 @@ snakemake -c 11 --use-conda --snakefile ../../workflow/Snakefile --configfile co
 
 # To Start a Python Server to see HTML files.
 python3 -m http.server 8000
+
+# Installing NG  merge
+mamba install -c bioconda ngmerge
