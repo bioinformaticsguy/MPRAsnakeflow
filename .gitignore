@@ -2,7 +2,7 @@
 report.html
 resources
 logs
-results
+*results
 !analysis/README.md
 !config
 !config/*
@@ -21,7 +21,7 @@ results
 *.pyc
 docs/_build/
 config/sbatch_omics_cluster.yaml
-data
+*data
 docs_data
 mix_data
 *report.html
