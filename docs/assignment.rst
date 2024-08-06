@@ -17,7 +17,7 @@ Fastq Files
 
 Design File
 -----------
-Fasta file of of CRS sequences with unique headers describing each tested sequence
+Multi-Fasta file of of CRS sequences with unique headers describing each tested sequence
 
 Example file:
 
@@ -32,6 +32,26 @@ Example file:
     >CRS4
     TTAGACCGCCCTTTACCCCGAGAAAACTCAGCTACACACTC
 
+.. note:: Headers of the design file must be unique (before any space), cannot contain :code:`[` or :code:`]` and should not contain duplicated sequences (forward and antisense).
+
+Config File
+-----------
+Multiple mapping strategies are implemented to find the corresponding CRS sequence for each read. The mapping strategy can be chosen in the config file (bwa mem or exact matches). The config file also defines the filtering of the mapping results and is is a yaml file.
+
+Example of an assignment file using bwa and the standard filtering:
+
+.. literalinclude:: ../config/example_assignment_bwa.yaml
+   :language: yaml
+
+Example of an assignment file using exact matches and the with and non-default filtering of barcodes:
+
+.. literalinclude:: ../config/example_assignment_exact_lazy.yaml
+   :language: yaml
+
+Example of an assignment file using exact matches and read 1 with BC, linker and oligo (no seperate BC index read):
+
+.. literalinclude:: ../config/example_assignment_exact_linker.yaml
+   :language: yaml
 
 snakemake
 ============================
@@ -46,8 +66,8 @@ Mandatory arguments:
     Use at most N CPU cores/jobs in parallel. If N is omitted or 'all', the limit is set to the number of available CPU cores. In case of cluster/cloud execution, this argument sets the number of total cores used over all jobs (made available to rules via workflow.cores).(default: None)
   :\-\-configfile:
     Specify or overwrite the config file of the workflow (see the docs). Values specified in JSON or YAML format are available in the global config dictionary inside the workflow. Multiple files overwrite each other in the given order. Thereby missing keys in previous config files are extended by following configfiles. Note that this order also includes a config file defined in the workflow definition itself (which will come first). (default: None)
-  :\-\-use-conda:             
-    **Required to run MPRAsnakeflow.** If defined in the rule, run job in a conda environment. If this flag is not set, the conda directive is ignored. (default: False)
+  :\-\-sdm:             
+    **Required to run MPRAsnakeflow.** : :code:`--sdm conda` or :code:`--sdm apptainer` Uses the defined conda environment per rule. We highly recommend to use apptainer where we build a predefined docker container with all software installewd within it. :code:`--sdm conda` teh conda envs will be installed by the first excecution of the workflow. If this flag is not set, the conda/apptainer directive is ignored. (default: False)
 Recommended arguments:
   :\-\-snakefile:             
     You should not need to specify this. By default, Snakemake will search for 'Snakefile', 'snakefile', 'workflow/Snakefile','workflow/snakefile' beneath the current working directory, in this order. Only if you definitely want a different layout, you need to use this parameter. This is very usefull when you want to have the results in a different folder than MPRAsnakeflow is in. (default: None)
@@ -67,7 +87,7 @@ all
 assignment_attach_idx
     Extract the index sequence and add it to the header.
 assignment_bwa_ref
-   Create mapping reference for BWA from design file.
+   Create mapping reference for BWA from design file (code:`bwa` mapping approach).
 assignment_collect
     Collect mapped reads into one BAM.
 assignment_collectBCs
@@ -82,20 +102,24 @@ assignmemt_hybridFWRead_get_reads_by_cutadapt
     Get the barcode and read from the FW read using cutadapt (when no index BC read is present). Uses the paired end mode of cutadapt to write the FW and BC read.
 assignment_merge
    Merge the FW,REV and BC fastq files into one. Extract the index sequence from the middle and end of an Illumina run. Separates reads for Paired End runs. Merge/Adapter trim reads stored in BAM.
-assignment_mapping
-   Map the reads to the reference.
+assignment_mapping_bwa
+   Map the reads to the reference (code:`bwa` mapping approach).
 assignment_idx_bam
-   Index the BAM file
+   Index the BAM file (code:`bwa` mapping approach).
 assignment_flagstat
-   Run samtools flagstat. Results are in :code:`results/assignment/<assignment_name>/statistic/assignment/bam_stats.txt`
+   Run samtools flagstat. Results are in :code:`results/assignment/<assignment_name>/statistic/assignment/bam_stats.txt`  (code:`bwa` mapping approach).
+assignment_mapping_exact_reference
+    Create reference to map the exact design  (code:`exact` mapping approach).
+rule assignment_mapping_exact
+    Map the reads to the reference and sort using exact match (code:`exact` mapping approach).
 assignment_getBCs
-   Get the barcodes (not filtered). Results are in :code:`results/assignment/<assignment_name>/barcodes_incl_other.sorted.tsv.gz`
+   Get the barcodes (not filtered). Results are in :code:`results/assignment/<assignment_name>/barcodes_incl_other.tsv.gz`
 assignment_statistic_totalCounts
-   Statistic of the total (unfiltered counts). Results are in :code:`results/assignment/<assignment_name>/statistic/total_counts.tsv.gz`
+   Statistic of the total (unfiltered counts). Results are in :code:`results/assignment/<assignment_name>/statistic/total_counts.tsv`
 assignment_filter
-   Filter the barcodes file based on the config given in the config-file. Results for this run are here :code:`results/assignment/<assignment_name>/assignment_barcodes.<config_name>.sorted.tsv.gz`.
+   Filter the barcodes file based on the config given in the config-file. Results for this run are here :code:`results/assignment/<assignment_name>/assignment_barcodes.<config_name>.tsv.gz`.
 assignment_statistic_assignedCounts
-   Statistic of filtered the assigned counts. Result is here :code:`results/assignment/<assignment_name>/statistic/assigned_counts.<config_name>.tsv.gz`.
+   Statistic of filtered the assigned counts. Result is here :code:`results/assignment/<assignment_name>/statistic/assigned_counts.<config_name>.tsv`.
 assignment_statistic_assignment
    Statistic of the filtered assignment.  Result is here :code:`results/assignment/<assignment_name>/statistic/assignment.<config_name>.tsv.gz` and a plot here :code:`results/assignment/<assignment_name>/statistic/assignment.<config_name>.png`.
 
@@ -116,8 +140,9 @@ File tree of the result folder (names in :code:`< >` can be specified in the con
     │   └── <assignment_name>
     │       ├── aligned_merged_reads.bam
     │       ├── aligned_merged_reads.bam.bai
-    │       ├── assignment_barcodes.<config_name>.sorted.tsv.gz
-    │       ├── barcodes_incl_other.sorted.tsv.gz
+    │       ├── assignment_barcodes.<config_name>.tsv.gz
+    │       ├── assignment_barcodes_with_ambigous.<config_name>.tsv.gz
+    │       ├── barcodes_incl_other.tsv.gz
     │       ├── reference
     │       │   ├── reference.fa
     │       │   ├── reference.fa.amb
@@ -128,19 +153,19 @@ File tree of the result folder (names in :code:`< >` can be specified in the con
     │       │   ├── reference.fa.pac
     │       │   └── reference.fa.sa
     │       └── statistic
-    │           ├── assigned_counts.<config_name>.tsv.gz
+    │           ├── assigned_counts.<config_name>.tsv
     │           ├── assignment
     │           │   └── bam_stats.txt
     │           ├── assignment.<config_name>.png
     │           ├── assignment.<config_name>.tsv.gz
-    │           └── total_counts.tsv.gz
+    │           └── total_counts.tsv
 
 
 
 
-total_counts.tsv.gz
-    Statistic of BCs mapped to oligos.
-assigned_counts.<config_name>.tsv.gz
+total_counts.tsv
+    Raw statistic of BCs mapped to oligos (number of observerd BCs and Oligos).
+assigned_counts.<config_name>.tsv
     Statistic of BCs mapped to oligos after fitering defined by config.
 assignment.<config_name>.tsv.gz
     Average/median support of BC per oligo. Oligos with >= 15 BCs.
@@ -148,10 +173,12 @@ reference.fa
     Design file.
 aligned_merged_reads.bam
     Sorted bamfile for oligo alignment
-barcodes_incl_other.sorted.tsv.gz
+barcodes_incl_other.tsv.gz
     Complete list of all barcodes found in mapping file (ambigous and unambigous) with mappings (if possible)
-assignment_barcodes.<config_name>.sorted.tsv.gz
-    Mapping file of barcodes to sequence. 
+assignment_barcodes.<config_name>.tsv.gz
+    Mapping file of barcodes to sequence. Can be used as input for the experiment workflow.
+assignment_barcodes_with_ambigous.<config_name>.tsv.gz
+    Mapping file of barcodes to sequence including ambigous and other observed barcodes. 
 assignment.<config_name>.png
     Visualization of number of barcodes mapping to oligo.
 bam_stats.txt
